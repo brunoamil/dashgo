@@ -55,6 +55,7 @@ const options: ApexOptions = {
   }
 };
 
+
 const series = [
   {
     name: "series 1", data: [10, 20, 30, 42, 33]
@@ -80,7 +81,6 @@ export default function Dashboard() {
             pb="4"
           >
             <Text fontSize="lg">Inscritos da Semana</Text>
-            
             <Chart options={options} series={series} type="area" height={160} />
           </Box>
           <Box
