@@ -19,6 +19,12 @@ const options: ApexOptions = {
     },
     foreColor: theme.colors.gray[500],
   },
+  series: [
+    {
+      name: 'sales',
+      data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
+    }
+  ],
   grid: {
     show: false,
   },
@@ -55,12 +61,8 @@ const options: ApexOptions = {
   },
 };
 
-const series = [
-  {
-    name: "series 1",
-    data: [10, 20, 30, 42, 33],
-  },
-];
+const series = [{ name: "Series1", data: [31, 120, 10, 28, 61, 18, 109] }];
+
 
 export default function Dashboard() {
   return (
