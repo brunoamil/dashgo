@@ -21,9 +21,9 @@ const options: ApexOptions = {
   },
   series: [
     {
-      name: 'sales',
-      data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
-    }
+      name: "sales",
+      data: [30, 40, 35, 50, 49, 60, 70, 91, 125],
+    },
   ],
   grid: {
     show: false,
@@ -61,10 +61,12 @@ const options: ApexOptions = {
   },
 };
 
-const series = [{ name: "Series1", data: [31, 120, 10, 28, 61, 18, 109] }];
-
+const series = [
+  { name: "Desktops", data: [10, 41, 35, 51, 49, 62, 69, 91, 148] },
+];
 
 export default function Dashboard() {
+  
   return (
     <Flex direction="column" h="100vh">
       <Header />
@@ -77,12 +79,12 @@ export default function Dashboard() {
           alignItems="flex-start"
         >
           <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
-            <Text fontSize="lg">Inscritos da Semanas</Text>
+            <Text fontSize="lg">Inscritos da Semanass</Text>
             <Chart options={options} series={series} type="area" height={160} />
           </Box>
           <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
             <Text fontSize="lg">Taxa de Abertura</Text>
-            <Chart options={options} series={series} type="area" height={160} />
+            <Chart options={options} series={series} type="line" height={160} />
           </Box>
         </SimpleGrid>
       </Flex>
