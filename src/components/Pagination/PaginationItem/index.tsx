@@ -19,6 +19,7 @@ export function PaginationItem({ isCurrent = false,  number }: PagiationItemProp
       </Button>
     );
   }
+  
   return (
     <Button
       size="sm"

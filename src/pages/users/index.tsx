@@ -16,35 +16,15 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { useEffect } from "react";
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
-import { useQuery } from "react-query";
 
 import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 import { SideBar } from "../../components/Sidebar";
+import { useUsers } from "../../services/hooks/userUsers";
 
 export default function UserList() {
-  const { data, isLoading, error } = useQuery("users", async () => {
-    const response = await fetch("http://localhost:3000/api/users");
-    const data = await response.json();
-    const users = data.users.map(user => {
-      return {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        createdAt: new Date(user.createdAt).toLocaleDateString('pt-BR', {
-          day: "2-digit",
-          month: "long",
-          year: "numeric"
-        }),
-      }
-    });
-
-     return users;
-  }, {
-    staleTime: 1000 * 5,
-  });
+  const { data, isLoading, error, isFetching } = useUsers();
 
   const isWideVersion = useBreakpointValue({
     base: false,
@@ -59,7 +39,7 @@ export default function UserList() {
         <Box flex="1" borderRadius={8} bg="gray.800" p="8">
           <Flex mb="8" justify="space-between" align="center">
             <Heading size="lg" fontWeight="normal">
-              Usuários
+              Usuários {!isLoading && isFetching && <Spinner size="sm" color="gray.500" />}
             </Heading>
             <Button
               as={NextLink}
@@ -94,7 +74,7 @@ export default function UserList() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {data.map((user) => {
+                  {data?.map((user) => {
                     return (
                       <Tr key={user.id}>
                         <Td px={["4", "4", "6"]}>
@@ -123,9 +103,9 @@ export default function UserList() {
                       </Tr>
                     );
                   })}
-                </Tbody>
+                </Tbody> 
               </Table>
-              <Pagination />
+              <Pagination totalCountOfRegisters={200} currentPage={2} onPageChange={() => {}} />
             </>
           )}
         </Box>
