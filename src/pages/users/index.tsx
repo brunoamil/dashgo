@@ -5,6 +5,7 @@ import {
   Flex,
   Heading,
   Icon,
+  Link,
   Spinner,
   Table,
   Tbody,
@@ -22,18 +23,29 @@ import { RiAddLine, RiPencilLine } from "react-icons/ri";
 import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 import { SideBar } from "../../components/Sidebar";
+import { api } from "../../services/api";
 import { useUsers } from "../../services/hooks/userUsers";
+import { queryClient } from "../../services/queryClient";
 
 export default function UserList() {
   const [page, setPage] = useState(1);
   const { data, isLoading, error, isFetching } = useUsers(page);
 
-  console.log("page", page)
+  console.log("page", page);
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
   });
 
+  async  function handlePrefetchUser(userId: string) {
+    await queryClient.prefetchQuery(["user", userId], async () => {
+      const response = await api.get(`users/${userId}`)
+
+      return response.data;
+    }, {
+      staleTime: 1000 * 60 * 10,
+    })
+  }
   return (
     <Box>
       <Header />
@@ -42,7 +54,10 @@ export default function UserList() {
         <Box flex="1" borderRadius={8} bg="gray.800" p="8">
           <Flex mb="8" justify="space-between" align="center">
             <Heading size="lg" fontWeight="normal">
-              Usuários {!isLoading && isFetching && <Spinner size="sm" color="gray.500" />}
+              Usuários{" "}
+              {!isLoading && isFetching && (
+                <Spinner size="sm" color="gray.500" />
+              )}
             </Heading>
             <Button
               as={NextLink}
@@ -85,7 +100,9 @@ export default function UserList() {
                         </Td>
                         <Td px={["4", "4", "6"]}>
                           <Box>
-                            <Text fontWeight="bold">{user.name}</Text>
+                            <Link color="purple.400" onMouseEnter={() => handlePrefetchUser(user.id)}>
+                              <Text fontWeight="bold">{user.name}</Text>
+                            </Link>
                             <Text fontSize="small" color="gray.300">
                               {user.email}
                             </Text>
@@ -106,9 +123,13 @@ export default function UserList() {
                       </Tr>
                     );
                   })}
-                </Tbody> 
+                </Tbody>
               </Table>
-              <Pagination totalCountOfRegisters={data?.totalCount!} currentPage={page} onPageChange={setPage} />
+              <Pagination
+                totalCountOfRegisters={data?.totalCount!}
+                currentPage={page}
+                onPageChange={setPage}
+              />
             </>
           )}
         </Box>
